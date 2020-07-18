@@ -70,4 +70,9 @@ public class HomBoundRequestController {
             return currentUser.getHomBoundsRequested();
         }).orElseThrow(() -> new Error("User " + userId + " does not exist!"));
     }
+
+    @GetMapping(path="/available")
+    public List<HomBoundRequest> getAllAvailableRequests(){
+        return homBoundRequestRepository.findAllByStatus(HomBoundStatus.Requested.name());
+    }
 }
