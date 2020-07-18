@@ -18,8 +18,8 @@ public class HomBoundUserController {
 
     @PostMapping(path = "/create")
     public HomBoundUser createUser(@RequestBody HomBoundUser user){
-        String encryptedPasword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encryptedPasword);
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
         return homBoundUserRepository.save(user);
     }
 }
