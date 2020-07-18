@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLOutput;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -45,16 +45,21 @@ public class UserService {
 
         HomBoundUser dbUser = userRepository.findByUsername(user.getUsername());
 
-        String encryptedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encryptedPassword);
+//        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+//        user.setPassword(encryptedPassword);
 
-        if (dbUser != null && user.getPassword().equals(dbUser.getPassword())){
+
+        if (dbUser != null &&  passwordEncoder.matches(user.getPassword(), dbUser.getPassword()) ){
             System.out.println("pasword are equal");
             dbUser.setActive(true);
             dbUser.setPassword(null);
             return dbUser;
         }
         System.out.println("pasword are NOT equal");
+        System.out.println("DB PAss");
+        System.out.println(dbUser.getPassword());
+        System.out.println("USER PASS");
+        System.out.println(user.getPassword());
         return null;
 
     }
