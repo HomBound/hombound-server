@@ -26,7 +26,7 @@ public class HomBoundRequestController {
     @PostMapping(path = "/create/{userId}")
     public HomBoundRequest createRequest(@RequestBody HomBoundRequest homBoundRequest, @PathVariable("userId") Long userId){
         Optional<HomBoundUser> user = homBoundUserRepository.findById(userId);
-        if(user == null){
+        if(!user.isPresent()){
             throw new Error("User " + userId + " does not exist!");
         }
         homBoundRequest.setStatus(HomBoundStatus.Requested.name());
@@ -37,11 +37,11 @@ public class HomBoundRequestController {
     @PostMapping(path = "/{requestId}/accept/{userId}")
     public HomBoundRequest acceptRequest(@PathVariable("requestId") Long requestId, @PathVariable("userId") Long userId){
         Optional<HomBoundRequest> request = homBoundRequestRepository.findById(requestId);
-        if(request == null){
+        if(!request.isPresent()){
             throw new Error("Could not find HomBound Request with id " + requestId + "!");
         }
         Optional<HomBoundUser> acceptingUser = homBoundUserRepository.findById(userId);
-        if(acceptingUser == null){
+        if(!acceptingUser.isPresent()){
             throw new Error("Could not find user with id " + requestId + "!");
         }
         Instant instant = Instant.now();
