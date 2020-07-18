@@ -1,5 +1,6 @@
 package HOMBOUND.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,34 +14,36 @@ public class HomBoundUser {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    @NotNull
+
     private String firstName;
-    @NotNull
+
     private String lastName;
-    @NotNull
+
     private String username;
-    @NotNull
+
     private String email;
-    @NotNull
+
     private String password;
-    @NotNull
+
     private Boolean volunteer;
-    @NotNull
+
     private Boolean active;
-    @NotNull
+
     private String address;
-    @NotNull
+
     private String city;
-    @NotNull
+
     private String state;
     @CreationTimestamp
     private Date createdAt;
     @UpdateTimestamp
     private Date updatedAt;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "requestedBy")
     private List<HomBoundRequest> homBoundsRequested;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "acceptedBy")
     private List<HomBoundRequest> homBoundsAccepted;
 
@@ -65,7 +68,7 @@ public class HomBoundUser {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.homBoundsRequested = homBoundsRequested;
-        this.homBoundsAccepted = homBoundsAccepted;
+     //   this.homBoundsAccepted = homBoundsAccepted;
         this.paymentMethods = paymentMethods;
     }
 
