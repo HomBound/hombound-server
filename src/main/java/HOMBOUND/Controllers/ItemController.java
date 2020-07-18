@@ -29,8 +29,8 @@ public class ItemController {
             String errMsg = "Could not find HomBound Request with id " + requestId + "!";
             throw new Error(errMsg);
         }
-        if (!request.get().getStatus().equals(HomBoundStatus.Requested.name())) {
-            String errMsg = "Request " + requestId + " has already been accepted and can no longer take new items.";
+        if (!request.get().getStatus().equals(HomBoundStatus.Open.name())) {
+            String errMsg = "Request " + requestId + " has already been submitted and can no longer take new items.";
             throw new Error(errMsg);
         }
         ItemType[] possibleItemOptions = ItemType.values();
