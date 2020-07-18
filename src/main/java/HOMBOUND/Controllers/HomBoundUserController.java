@@ -2,34 +2,39 @@ package HOMBOUND.Controllers;
 
 import HOMBOUND.Models.HomBoundUser;
 import HOMBOUND.Models.UserCredentials;
+import HOMBOUND.Repositories.HomBoundUserRepository;
 import HOMBOUND.Services.UserService;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.CrossOrigin;
+
+
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
-@RequestMapping("/users")
+@RequestMapping("api/users")
 @RestController
-public class UserController {
+public class HomBoundUserController {
+
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public HomBoundUserRepository homBoundUserRepository;
+
+    @PostMapping(path = "/create")
+    public HomBoundUser createUser(@RequestBody HomBoundUser user){
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encryptedPassword);
+        return homBoundUserRepository.save(user);
     }
 
-    @PostMapping
-    public void createUser(@RequestBody HomBoundUser user){
-        userService.createUser(user);
-    }
 
     @GetMapping("/login")
     public ResponseEntity login(@RequestBody UserCredentials user){
@@ -37,20 +42,6 @@ public class UserController {
 
     }
 
-//    @GetMapping("/login")
-//    @ResponseBody
-//    public ResponseEntity login(@RequestBody HomBoundUser user){
-//        System.out.println(user.getUsername());
-//        System.out.println(user.getPassword());
-//        HomBoundUser logUser = userService.login(user);
-//        if(logUser != null) {
-//            System.out.println("Ready to return");
-//            System.out.println(logUser.getPassword());
-//            return new ResponseEntity(logUser);
-//        }
-//        return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
-    // return new ResponseEntity<>(userService.login(user), HttpStatus.OK);
-//    }
 
     @GetMapping
     public List<HomBoundUser> getAllUsers(){
@@ -71,4 +62,8 @@ public class UserController {
     public void updateUser(@Valid @NotNull @PathVariable("id") @RequestBody HomBoundUser updatedUser){
         userService.updateUser(updatedUser);
     }
+
+
+
+
 }
