@@ -18,10 +18,10 @@ public class HomBoundRequest {
     @JsonIgnore
     @ManyToOne
     private HomBoundUser requestedBy;
-
     @JsonIgnore
     @ManyToOne
     private HomBoundUser acceptedBy;
+
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "homBoundRequest")
     private List<Item> requestedItems;

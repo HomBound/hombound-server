@@ -1,0 +1,9 @@
+runtime: java11
+
+env_variables:
+  HOMBOUND_DB_HOST: '35.194.92.27'
+  HOMBOUND_DB_PORT: ‘5432’
+  HOMBOUND_DB_NAME: ‘postgres'
+  HOMBOUND_DB_USER: ‘postgres’
+  HOMBOUND_DB_PASS: ‘riufh3@hd@’
+
