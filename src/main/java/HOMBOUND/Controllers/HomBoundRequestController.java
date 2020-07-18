@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin
@@ -60,5 +61,13 @@ public class HomBoundRequestController {
         request.get().setAcceptedAt(acceptedAt);
         request.get().setStatus(HomBoundStatus.Accepted.name());
         return homBoundRequestRepository.save(request.get());
+    }
+
+    @GetMapping(path="/requestedBy/{userId}")
+    public List<HomBoundRequest> getRequestsByUser(@PathVariable("userId") Long userId){
+        Optional<HomBoundUser> user = homBoundUserRepository.findById(userId);
+        return user.map(currentUser -> {
+            return currentUser.getHomBoundsRequested();
+        }).orElseThrow(() -> new Error("User " + userId + " does not exist!"));
     }
 }
