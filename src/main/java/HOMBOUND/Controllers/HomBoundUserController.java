@@ -36,10 +36,9 @@ public class HomBoundUserController {
     }
 
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity login(@RequestBody UserCredentials user){
         return  ResponseEntity.ok(userService.login(user));
-
     }
 
 

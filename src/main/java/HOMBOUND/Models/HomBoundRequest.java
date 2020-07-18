@@ -15,10 +15,10 @@ public class HomBoundRequest {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-
+    @JsonIgnore
     @ManyToOne
     private HomBoundUser requestedBy;
-
+    @JsonIgnore
     @ManyToOne
     private HomBoundUser acceptedBy;
 

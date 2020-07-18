@@ -39,11 +39,9 @@ public class HomBoundUser {
     @UpdateTimestamp
     private Date updatedAt;
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "requestedBy")
     private List<HomBoundRequest> homBoundsRequested;
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "acceptedBy")
     private List<HomBoundRequest> homBoundsAccepted;
 
