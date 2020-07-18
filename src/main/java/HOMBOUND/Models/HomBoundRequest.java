@@ -29,7 +29,7 @@ public class HomBoundRequest {
     @NotNull
     private String store;
     @NotNull
-    private HomBoundStatus status;
+    private String status;
     @CreationTimestamp
     private Date createdAt;
     private Date acceptedAt;
@@ -40,7 +40,7 @@ public class HomBoundRequest {
     public HomBoundRequest() {
     }
 
-    public HomBoundRequest(Long id, HomBoundUser requestedBy, HomBoundUser acceptedBy, List<Item> requestedItems, String store, HomBoundStatus status, Date createdAt, Date acceptedAt, Date completedAt, String receiptImgUrl, String paymentSentImgUrl) {
+    public HomBoundRequest(Long id, HomBoundUser requestedBy, HomBoundUser acceptedBy, List<Item> requestedItems, String store, String status, Date createdAt, Date acceptedAt, Date completedAt, String receiptImgUrl, String paymentSentImgUrl) {
         this.id = id;
         this.requestedBy = requestedBy;
         this.acceptedBy = acceptedBy;
@@ -74,13 +74,7 @@ public class HomBoundRequest {
         this.acceptedBy = acceptedBy;
     }
 
-    public HomBoundStatus getStatus() {
-        return status;
-    }
 
-    public void setStatus(HomBoundStatus status) {
-        this.status = status;
-    }
 
     public Date getCreatedAt() {
         return createdAt;
@@ -136,5 +130,13 @@ public class HomBoundRequest {
 
     public void setStore(String store) {
         this.store = store;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
