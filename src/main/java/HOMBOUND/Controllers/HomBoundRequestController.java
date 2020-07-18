@@ -29,9 +29,19 @@ public class HomBoundRequestController {
         if(!user.isPresent()){
             throw new Error("User " + userId + " does not exist!");
         }
-        homBoundRequest.setStatus(HomBoundStatus.Requested.name());
+        homBoundRequest.setStatus(HomBoundStatus.Open.name());
         homBoundRequest.setRequestedBy(user.get());
         return homBoundRequestRepository.save(homBoundRequest);
+    }
+
+    @PostMapping(path="{requestId}/submit")
+    public HomBoundRequest submitRequest(@PathVariable("requestId") Long requestId){
+        Optional<HomBoundRequest> request = homBoundRequestRepository.findById(requestId);
+        if(!request.isPresent()){
+            throw new Error("Could not find HomBound Request with id " + requestId + "!");
+        }
+        request.get().setStatus(HomBoundStatus.Requested.name());
+        return homBoundRequestRepository.save(request.get());
     }
 
     @PostMapping(path = "/{requestId}/accept/{userId}")
