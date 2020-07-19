@@ -82,6 +82,7 @@ public class HomBoundRequestController {
     }
 
 
+
     @DeleteMapping(path="/{requestId}/delete")
     public ResponseEntity deleteRequest(@PathVariable("requestId") Long requestId, @RequestBody Long userId){
         if(itemController.canUserUpdate(userId, requestId)) {
@@ -92,6 +93,17 @@ public class HomBoundRequestController {
             throw new Error("User " + userId + "does not have permission to delete any items from request " + requestId);
         }
 
-
     }
+
+    // Custom Input Types
+    private static class RequestWithUserId {
+        public Long userId;
+        public HomBoundRequest request;
+
+        public RequestWithUserId(Long userId, HomBoundRequest request) {
+            this.userId = userId;
+            this.request = request;
+        }
+    }
+
 }

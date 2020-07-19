@@ -28,11 +28,15 @@ public class ItemController {
     public HomBoundUserRepository homBoundUserRepository;
 
     @PostMapping(path="/{requestId}/add")
-    public Item addItemToRequest(@PathVariable("requestId") Long requestId, @RequestBody Item item){
+    public Item addItemToRequest(@PathVariable("requestId") Long requestId, @RequestBody ItemWithUserId itemWithUserId){
         Optional<HomBoundRequest> request = homBoundRequestRepository.findById(requestId);
-        checkForRequestErrors(requestId, item);
-        item.setHomBoundRequest(request.get());
-        return itemRepository.save(item);
+        if(canUserUpdate(itemWithUserId.userId, requestId)) {
+            checkForRequestErrors(requestId, itemWithUserId.item);
+            itemWithUserId.item.setHomBoundRequest(request.get());
+            return itemRepository.save(itemWithUserId.item);
+        } else {
+            throw new Error("User " + itemWithUserId.userId + " does not have permission to edit this request.");
+        }
     }
 
     @PutMapping(path="/{requestId}/item/{itemId}/update")
@@ -96,21 +100,14 @@ public class ItemController {
         return (user.get().getId() == request.get().getRequestedBy().getId());
     }
 
-    // Custom Types
+
+    // Custom Input Types
     private static class ItemWithUserId {
         public Long userId;
         public Item item;
         public ItemWithUserId(Long userId, Item item) {
             this.userId = userId;
             this.item = item;
-        }
-    }
-    private static class RequestWithUserId {
-        public Long userId;
-        public HomBoundRequest request;
-        public RequestWithUserId(Long userId, HomBoundRequest request) {
-            this.userId = userId;
-            this.request = request;
         }
     }
 }
