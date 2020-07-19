@@ -36,7 +36,7 @@ public class ItemController {
     }
 
     @PutMapping(path="/{requestId}/item/{itemId}/update")
-    public Item updateItemInRequest(@PathVariable("requestId") Long requestId, @PathVariable("itemId") Long itemId , @RequestBody ItemWithUserId itemWithUserId){
+    public Item updateItemInRequest(@PathVariable("requestId") Long requestId, @PathVariable("itemId") Long itemId, @RequestBody ItemWithUserId itemWithUserId){
         Optional<Item> itemToUpdate = itemRepository.findById(itemId);
         if(!itemToUpdate.isPresent()){
             throw new Error("Item with id " + itemId + " does not exist!");
@@ -57,6 +57,15 @@ public class ItemController {
             return itemRepository.save(itemToUpdate.get());
         } else {
             throw new Error("User " + itemWithUserId.userId + " does not have permission to edit this request.");
+        }
+    }
+
+    @DeleteMapping(path="/{requestId}/item/{itemId}/delete")
+    public void deleteItemInRequest(@PathVariable("requestId") Long requestId, @PathVariable("itemId") Long itemId, @RequestBody Long userId){
+        if(canUserUpdate(userId, requestId)){
+            itemRepository.deleteById(itemId);
+        } else {
+            throw new Error("User " + userId + "does not have permission to delete any items from request " + requestId);
         }
     }
 
