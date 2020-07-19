@@ -44,7 +44,7 @@ public class UserService {
         System.out.println("Login Method");
 
         HomBoundUser dbUser = userRepository.findByUsername(user.getUsername());
-        it
+
 
 
         if (dbUser != null &&  passwordEncoder.matches(user.getPassword(), dbUser.getPassword()) ){
