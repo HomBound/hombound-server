@@ -90,8 +90,10 @@ public class ItemController {
     public boolean canUserUpdate(Long userId, Long requestId){
         Optional<HomBoundRequest> request = homBoundRequestRepository.findById(requestId);
         Optional<HomBoundUser> user = homBoundUserRepository.findById(userId);
-        if(!request.isPresent() || !user.isPresent()) throw new Error("Could not find user " + userId + " or request " + requestId + " in order to verify permission.");
-        return user.get().getId() == request.get().getRequestedBy().getId();
+
+       if(!request.isPresent() || !user.isPresent()) throw new Error("Could not find user " + userId + " or request " + requestId + " in order to verify permission.");
+
+        return (user.get().getId() == request.get().getRequestedBy().getId());
     }
 
     // Custom Types
