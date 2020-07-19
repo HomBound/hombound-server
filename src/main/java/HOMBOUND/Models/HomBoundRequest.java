@@ -23,7 +23,7 @@ public class HomBoundRequest {
     private HomBoundUser acceptedBy;
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "homBoundRequest")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "homBoundRequest", orphanRemoval = true)
     private List<Item> requestedItems;
 
     @NotNull

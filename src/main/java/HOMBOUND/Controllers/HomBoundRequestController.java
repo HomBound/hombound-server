@@ -5,7 +5,9 @@ import HOMBOUND.Models.HomBoundUser;
 import HOMBOUND.Models.enums.HomBoundStatus;
 import HOMBOUND.Repositories.HomBoundRequestRepository;
 import HOMBOUND.Repositories.HomBoundUserRepository;
+import HOMBOUND.Repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Instant;
@@ -23,6 +25,9 @@ public class HomBoundRequestController {
 
     @Autowired
     public HomBoundUserRepository homBoundUserRepository;
+
+    @Autowired
+    public ItemController itemController;
 
     @PostMapping(path = "/create/{userId}")
     public HomBoundRequest createRequest(@RequestBody HomBoundRequest homBoundRequest, @PathVariable("userId") Long userId){
@@ -76,13 +81,29 @@ public class HomBoundRequestController {
         return homBoundRequestRepository.findAllByStatus(HomBoundStatus.Requested.name());
     }
 
+
+
+    @DeleteMapping(path="/{requestId}/delete")
+    public ResponseEntity deleteRequest(@PathVariable("requestId") Long requestId, @RequestBody Long userId){
+        if(itemController.canUserUpdate(userId, requestId)) {
+            homBoundRequestRepository.deleteById(requestId);
+            return ResponseEntity.ok("Request Deleted");
+        }
+        else{
+            throw new Error("User " + userId + "does not have permission to delete any items from request " + requestId);
+        }
+
+    }
+
     // Custom Input Types
     private static class RequestWithUserId {
         public Long userId;
         public HomBoundRequest request;
+
         public RequestWithUserId(Long userId, HomBoundRequest request) {
             this.userId = userId;
             this.request = request;
         }
     }
+
 }
