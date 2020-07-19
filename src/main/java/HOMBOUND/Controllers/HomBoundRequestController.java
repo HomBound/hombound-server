@@ -75,4 +75,14 @@ public class HomBoundRequestController {
     public List<HomBoundRequest> getAllAvailableRequests(){
         return homBoundRequestRepository.findAllByStatus(HomBoundStatus.Requested.name());
     }
+
+    // Custom Input Types
+    private static class RequestWithUserId {
+        public Long userId;
+        public HomBoundRequest request;
+        public RequestWithUserId(Long userId, HomBoundRequest request) {
+            this.userId = userId;
+            this.request = request;
+        }
+    }
 }
